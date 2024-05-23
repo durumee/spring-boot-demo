@@ -86,6 +86,7 @@ public class SecurityConfig {
                 "/static/**",
                 "/css/**",
                 "/js/**",
+                "/assets/**",   /*리액트JS 빌드 기본 리소스*/
                 "/images/**",
                 "/error/**",
                 "/",
