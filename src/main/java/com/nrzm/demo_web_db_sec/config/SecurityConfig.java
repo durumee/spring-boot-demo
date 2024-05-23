@@ -1,6 +1,9 @@
 package com.nrzm.demo_web_db_sec.config;
 
+import com.nrzm.demo_web_db_sec.repository.MemberRepository;
 import com.nrzm.demo_web_db_sec.security.CustomAccessDeniedHandler;
+import com.nrzm.demo_web_db_sec.security.CustomUserDetailsService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,8 +21,16 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 
 @Configuration
 @EnableWebSecurity
+@Slf4j
 public class SecurityConfig {
+    private final CustomUserDetailsService userDetailsService;
 
+    public SecurityConfig(CustomUserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
+
+    /* 사용자 DB 없이 로그인 구현하는 시스템은 아래 방식(InMemoryUserDetailsManager)을 사용 */
+    /*
     @Bean
     public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
         UserDetails user = User.builder()
@@ -36,6 +47,7 @@ public class SecurityConfig {
 
         return new InMemoryUserDetailsManager(user, admin);
     }
+    */
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -86,6 +98,7 @@ public class SecurityConfig {
                 "/static/**",
                 "/css/**",
                 "/js/**",
+                "/assets/**",
                 "/images/**",
                 "/error/**",
                 "/",
