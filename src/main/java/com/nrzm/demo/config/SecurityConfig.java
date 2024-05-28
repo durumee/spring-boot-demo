@@ -1,6 +1,6 @@
-package com.nrzm.demo_web_db_sec.config;
+package com.nrzm.demo.config;
 
-import com.nrzm.demo_web_db_sec.security.CustomAccessDeniedHandler;
+import com.nrzm.demo.security.CustomAccessDeniedHandler;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
