@@ -1,6 +1,6 @@
-package com.nrzm.demo_web_db_sec.controller;
+package com.nrzm.demo.controller;
 
-import com.nrzm.demo_web_db_sec.dto.Product;
+import com.nrzm.demo.dto.Product;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

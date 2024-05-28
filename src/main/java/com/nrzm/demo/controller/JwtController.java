@@ -1,7 +1,7 @@
-package com.nrzm.demo_web_db_sec.controller;
+package com.nrzm.demo.controller;
 
-import com.nrzm.demo_web_db_sec.auth.jwt.JwtProvider;
-import com.nrzm.demo_web_db_sec.auth.jwt.JwtRequest;
+import com.nrzm.demo.auth.jwt.JwtProvider;
+import com.nrzm.demo.auth.jwt.JwtRequest;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;

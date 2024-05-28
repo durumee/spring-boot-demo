@@ -1,4 +1,4 @@
-package com.nrzm.demo_web_db_sec.dto;
+package com.nrzm.demo.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.nrzm.demo_web_db_sec.config;
+package com.nrzm.demo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

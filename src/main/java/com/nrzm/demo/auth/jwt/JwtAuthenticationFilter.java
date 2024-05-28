@@ -1,4 +1,4 @@
-package com.nrzm.demo_web_db_sec.auth.jwt;
+package com.nrzm.demo.auth.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

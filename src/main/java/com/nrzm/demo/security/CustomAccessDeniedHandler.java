@@ -1,4 +1,4 @@
-package com.nrzm.demo_web_db_sec.security;
+package com.nrzm.demo.security;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;

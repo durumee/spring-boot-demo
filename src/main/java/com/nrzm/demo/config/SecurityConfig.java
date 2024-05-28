@@ -1,8 +1,8 @@
-package com.nrzm.demo_web_db_sec.config;
+package com.nrzm.demo.config;
 
-import com.nrzm.demo_web_db_sec.auth.jwt.JwtAuthenticationFilter;
-import com.nrzm.demo_web_db_sec.auth.jwt.JwtProvider;
-import com.nrzm.demo_web_db_sec.security.CustomAccessDeniedHandler;
+import com.nrzm.demo.auth.jwt.JwtAuthenticationFilter;
+import com.nrzm.demo.auth.jwt.JwtProvider;
+import com.nrzm.demo.security.CustomAccessDeniedHandler;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
