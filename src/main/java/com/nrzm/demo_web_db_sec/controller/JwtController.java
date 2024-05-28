@@ -58,41 +58,6 @@ public class JwtController {
         return ResponseEntity.ok().headers(headers).build();
     }
 
-//    @PostMapping("/refresh-token")
-//    public ResponseEntity<?> refresh(@CookieValue("refreshToken") String refreshToken, HttpServletResponse response) {
-//        if (jwtProvider.validateToken(refreshToken)) {
-//            String username = jwtProvider.getUsernameFromToken(refreshToken);
-//            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-//
-//            // JWT 토큰 생성
-//            String newToken = jwtProvider.generateToken(userDetails.getUsername());
-//
-//            // JWT 토큰을 응답 헤더로 추가
-//            HttpHeaders headers = new HttpHeaders();
-//            headers.set("Authorization", "Bearer " + newToken);
-//
-//            return ResponseEntity.ok().headers(headers).build();
-//        } else {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid refresh token");
-//        }
-//    }
-
-//    @GetMapping("/validate-token")
-//    public ResponseEntity<?> validateToken(@RequestHeader("Authorization") String tokenHeader) {
-//        if (tokenHeader == null || !tokenHeader.startsWith("Bearer ")) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
-//        }
-//
-//        String token = tokenHeader.replace("Bearer ", "");
-//        boolean isValid = jwtProvider.validateToken(token);
-//
-//        if (!isValid) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
-//        }
-//
-//        return ResponseEntity.ok("");
-//    }
-
     @GetMapping("/invalidate-token")
     public ResponseEntity<?> logout(@RequestHeader("Authorization") String authorizationHeader, HttpServletResponse response) {
         // 리프레시 토큰 무효화 (쿠키 삭제)
