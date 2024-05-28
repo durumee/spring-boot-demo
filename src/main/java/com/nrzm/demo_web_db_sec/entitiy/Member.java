@@ -1,6 +1,8 @@
 package com.nrzm.demo_web_db_sec.entitiy;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +13,7 @@ import lombok.Setter;
 public class Member {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String memberName;
     private String memberPassword;

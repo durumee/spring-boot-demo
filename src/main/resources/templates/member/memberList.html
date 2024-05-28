@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Member List</title>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css" />
+</head>
+<body>
+<h1>Member List</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Role</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="member : ${members}">
+        <td th:text="${member.id}">1</td>
+        <td th:text="${member.memberName}">username</td>
+        <td th:text="${member.role}">role</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

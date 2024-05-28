@@ -1,0 +1,59 @@
+spring:
+  application:
+    name: demo-db
+
+  h2:
+    console:
+      enabled: true
+      # path: /h2-console # h2 db console 경로 변경
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ;;;
+    initialization-mode: always
+    #always: 데이터 소스가 항상 초기화됩니다.
+    #embedded: 데이터 소스가 임베디드 데이터베이스인 경우에만 초기화됩니다.
+    #never: 데이터 소스를 절대 초기화하지 않습니다.
+    #Default: embedded
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+      #애플리케이션이 시작될 때 데이터베이스 스키마를 삭제하고 새로 생성합니다. 기존 데이터는 모두 삭제됩니다.
+      #Options: none, validate, update, create, create-drop
+      show-sql: true
+      #Hibernate가 실행하는 모든 SQL 쿼리를 콘솔에 출력합니다.
+      #Default: false
+      format-sql: true
+      #출력되는 SQL 쿼리를 보기 좋게 포맷팅합니다.
+      #Default: false
+    defer-datasource-initialization: true
+    #JPA 데이터 소스 초기화를 지연시켜 JPA 스키마가 생성된 후 SQL 스크립트를 실행합니다.
+    #src/main/resources/data.sql 방식으로 데이터 초기 적재를 하려면 true 필수
+    #Default: false
+
+# Swagger
+springdoc:
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  api-docs:
+    groups:
+      enabled: true
+  swagger-ui:
+    operations-sorter: alpha # alpha(알파벳 오름차순), method(HTTP메소드순)
+    tags-sorter: alpha # 태그 정렬 기준
+    path: /swagger # html 문서 접속 경로
+    disable-swagger-default-url: true
+    display-query-params-without-oauth2: true
+    doc-expansion: none # tag, operation 펼치는 방식
+  paths-to-match:
+    - /**
+
+logging:
+  level:
+    org:
+      springframework: DEBUG
+      springframework.security: TRACE
