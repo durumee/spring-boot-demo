@@ -1,7 +1,7 @@
-package com.nrzm.demo_web_db_sec.controller;
+package com.nrzm.demo.controller;
 
-import com.nrzm.demo_web_db_sec.entitiy.Member;
-import com.nrzm.demo_web_db_sec.service.MemberService;
+import com.nrzm.demo.entitiy.Member;
+import com.nrzm.demo.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

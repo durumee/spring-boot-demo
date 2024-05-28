@@ -1,6 +1,6 @@
-package com.nrzm.demo_web_db_sec.repository;
+package com.nrzm.demo.repository;
 
-import com.nrzm.demo_web_db_sec.entitiy.Member;
+import com.nrzm.demo.entitiy.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

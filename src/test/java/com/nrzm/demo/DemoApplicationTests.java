@@ -1,10 +1,10 @@
-package com.nrzm.demo_web_db_sec;
+package com.nrzm.demo;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DemoWebDbSecApplicationTests {
+class DemoApplicationTests {
 
 	@Test
 	void contextLoads() {

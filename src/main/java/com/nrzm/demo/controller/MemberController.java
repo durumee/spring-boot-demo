@@ -1,7 +1,7 @@
-package com.nrzm.demo_web_db_sec.controller;
+package com.nrzm.demo.controller;
 
-import com.nrzm.demo_web_db_sec.entitiy.Member;
-import com.nrzm.demo_web_db_sec.service.MemberService;
+import com.nrzm.demo.entitiy.Member;
+import com.nrzm.demo.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

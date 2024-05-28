@@ -1,13 +1,13 @@
-package com.nrzm.demo_web_db_sec;
+package com.nrzm.demo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DemoWebDbSecApplication {
+public class DemoApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DemoWebDbSecApplication.class, args);
+		SpringApplication.run(DemoApplication.class, args);
 	}
 
 }

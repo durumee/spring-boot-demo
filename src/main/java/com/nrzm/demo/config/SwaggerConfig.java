@@ -1,4 +1,4 @@
-package com.nrzm.demo_web_db_sec.config;
+package com.nrzm.demo.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;

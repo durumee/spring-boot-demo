@@ -1,4 +1,4 @@
-package com.nrzm.demo_web_db_sec.entitiy;
+package com.nrzm.demo.entitiy;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

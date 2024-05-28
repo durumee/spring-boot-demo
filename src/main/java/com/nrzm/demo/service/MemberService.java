@@ -1,7 +1,7 @@
-package com.nrzm.demo_web_db_sec.service;
+package com.nrzm.demo.service;
 
-import com.nrzm.demo_web_db_sec.entitiy.Member;
-import com.nrzm.demo_web_db_sec.repository.MemberRepository;
+import com.nrzm.demo.entitiy.Member;
+import com.nrzm.demo.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
