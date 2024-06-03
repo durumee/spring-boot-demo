@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket 메시지 발송</title>
+</head>
+<body>
+<h1>WebSocket 메시지 발송</h1>
+<button id="connectButton">Connect</button>
+<button id="disconnectButton" disabled>Disconnect</button>
+<div>
+    <input type="text" id="messageInput" placeholder="내용을 입력하고 엔터를 입력하세요">
+    <button id="sendButton" disabled>Send</button>
+</div>
+<div id="messages"></div>
+
+<script>
+        let socket;
+        const connectButton = document.getElementById('connectButton');
+        const disconnectButton = document.getElementById('disconnectButton');
+        const sendButton = document.getElementById('sendButton');
+        const messageInput = document.getElementById('messageInput');
+        const messagesDiv = document.getElementById('messages');
+
+        messageInput.addEventListener('keyup', (e) => {
+            if (e.keyCode == 13) {
+                sendButton.click();
+            }
+        });
+
+        connectButton.addEventListener('click', () => {
+            socket = new WebSocket('ws://localhost:8080/ws');
+
+            socket.onopen = () => {
+                console.log('Connected to server');
+                connectButton.disabled = true;
+                disconnectButton.disabled = false;
+                sendButton.disabled = false;
+            };
+
+            socket.onmessage = (event) => {
+                const message = event.data;
+                console.log('Received message:', message);
+                const messageElem = document.createElement('p');
+                messageElem.textContent = "Server: " + message;
+                messagesDiv.appendChild(messageElem);
+            };
+
+            socket.onclose = () => {
+                console.log('Disconnected from server');
+                connectButton.disabled = false;
+                disconnectButton.disabled = true;
+                sendButton.disabled = true;
+            };
+        });
+
+        disconnectButton.addEventListener('click', () => {
+            if (socket) {
+                socket.close();
+            }
+        });
+
+        sendButton.addEventListener('click', () => {
+            const message = messageInput.value;
+            if (message && socket.readyState === WebSocket.OPEN) {
+                socket.send(message);
+                const messageElem = document.createElement('p');
+                messageElem.textContent = "You: " + message;
+                messagesDiv.appendChild(messageElem);
+                messageInput.value = '';
+            }
+        });
+    </script>
+</body>
+</html>

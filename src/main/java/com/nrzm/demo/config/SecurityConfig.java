@@ -54,6 +54,7 @@ public class SecurityConfig {
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/user/**").hasRole("USER")
                         .requestMatchers(PathRequest.toH2Console()).permitAll()
+                        .requestMatchers("/ws/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(httpBasic -> httpBasic.disable()) // HTTP Basic 인증 비활성화 (폼로그인으로 대체)
@@ -91,6 +92,8 @@ public class SecurityConfig {
                 "/error/**",
                 "/",
                 "/index.html",
+                "/send.html",
+                "/recv.html",
                 "/favicon.*"
         );
     }
