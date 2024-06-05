@@ -2,8 +2,11 @@ package com.nrzm.demo.config;
 
 import com.nrzm.demo.auth.jwt.JwtAuthenticationFilter;
 import com.nrzm.demo.auth.jwt.JwtProvider;
+import com.nrzm.demo.auth.oauth.OAuth2AuthenticationSuccessHandler;
+import com.nrzm.demo.auth.oauth.OAuth2ClientProperties;
 import com.nrzm.demo.security.CustomAccessDeniedHandler;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +22,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -32,6 +40,11 @@ import java.util.Arrays;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    @Autowired
+    private OAuth2ClientProperties oAuth2ClientProperties;
+
+    @Autowired
+    private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
     private final JwtProvider jwtProvider;
     private final UserDetailsService userDetailsService;
@@ -87,6 +100,30 @@ public class SecurityConfig {
     }
 
     @Bean
+    public ClientRegistrationRepository clientRegistrationRepository() {
+        return new InMemoryClientRegistrationRepository(this.githubClientRegistration());
+    }
+
+    private ClientRegistration githubClientRegistration() {
+        OAuth2ClientProperties.Registration registration = oAuth2ClientProperties.getRegistration().get("github");
+        OAuth2ClientProperties.Provider provider = oAuth2ClientProperties.getProvider().get("github");
+
+        return ClientRegistration.withRegistrationId("github")
+                .clientId(registration.getClientId())
+                .clientSecret(registration.getClientSecret())
+                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+                .authorizationGrantType(new AuthorizationGrantType(registration.getAuthorizationGrantType()))
+                .redirectUri(registration.getRedirectUri())
+                .scope(registration.getScope().split(","))
+                .authorizationUri(provider.getAuthorizationUri())
+                .tokenUri(provider.getTokenUri())
+                .userInfoUri(provider.getUserInfoUri())
+                .userNameAttributeName(provider.getUserNameAttribute())
+                .clientName(registration.getClientName())
+                .build();
+    }
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
@@ -94,6 +131,7 @@ public class SecurityConfig {
                         .requestMatchers("/user/**").hasRole("USER")
                         .requestMatchers("/token").permitAll()  //토큰생성(로그인)
                         .requestMatchers("/invalidate-token").permitAll()   //토큰삭제(리프레시토큰까지 제거)
+                        .requestMatchers("/oauth2/**").permitAll()  //OAuth2 처리
                         .requestMatchers(PathRequest.toH2Console()).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -106,6 +144,10 @@ public class SecurityConfig {
                 .exceptionHandling(exception -> exception
                         .accessDeniedHandler(accessDeniedHandler())   // 403 Forbidden 처리 관련
                         .authenticationEntryPoint(authenticationEntryPoint())   // 401 Unauthorized, 500 Internal Server Error 처리 관련
+                )
+                .oauth2Login(oauth2 -> oauth2
+                        .clientRegistrationRepository(clientRegistrationRepository())
+                        .successHandler(oAuth2AuthenticationSuccessHandler)
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
