@@ -6,6 +6,7 @@ import com.nrzm.demo.auth.oauth.OAuth2AuthenticationSuccessHandler;
 import com.nrzm.demo.auth.oauth.OAuth2ClientProperties;
 import com.nrzm.demo.security.CustomAccessDeniedHandler;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -39,6 +40,7 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
+@Slf4j
 public class SecurityConfig {
     @Autowired
     private OAuth2ClientProperties oAuth2ClientProperties;
@@ -61,6 +63,7 @@ public class SecurityConfig {
 
     @Bean
     public AccessDeniedHandler accessDeniedHandler() {
+        log.info("accessDeniedHandler:: init");
         return new CustomAccessDeniedHandler();
     }
 
@@ -82,21 +85,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationEntryPoint authenticationEntryPoint() {
-        return (request, response, authException) -> {
-            if (authException instanceof InternalAuthenticationServiceException) {
-                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                response.getWriter().write("{\"error\": \"Internal Server Error\"}");
-            } else if (authException instanceof UsernameNotFoundException || authException instanceof BadCredentialsException) {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                response.getWriter().write("{\"error\": \"Invalid username or password\"}");
-            } else {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                response.getWriter().write("{\"error\": \"Unauthorized\"}");
-            }
-        };
+        return new CustomAuthenticationEntryPoint();
     }
 
     @Bean
@@ -131,8 +120,9 @@ public class SecurityConfig {
                         .requestMatchers("/user/**").hasRole("USER")
                         .requestMatchers("/token").permitAll()  //토큰생성(로그인)
                         .requestMatchers("/invalidate-token").permitAll()   //토큰삭제(리프레시토큰까지 제거)
-                        .requestMatchers("/oauth2/**").permitAll()  //OAuth2 처리
-                        .requestMatchers(PathRequest.toH2Console()).permitAll()
+                        .requestMatchers("/login/oauth2/code/**").permitAll()  //OAuth2 처리
+                        .requestMatchers("/login/oauth2/**").permitAll()  //OAuth2 처리
+                        .requestMatchers("/login/**").permitAll()  //OAuth2 처리
                         .anyRequest().authenticated()
                 )
                 .httpBasic(httpBasic -> httpBasic.disable()) // HTTP Basic 인증 비활성화 (JWT로그인으로 대체)

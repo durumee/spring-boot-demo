@@ -24,6 +24,11 @@ server:
 
 logging:
   level:
+    root: INFO
     org:
       springframework: DEBUG
       springframework.security: TRACE
+    com:
+      nrzm:
+        demo:
+          security: DEBUG
