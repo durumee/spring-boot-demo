@@ -13,6 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,9 +21,9 @@ import org.springframework.web.bind.annotation.*;
 public class JwtController {
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
-    private final UserDetailsService userDetailsService;
+    private final InMemoryUserDetailsManager userDetailsService;
 
-    public JwtController(AuthenticationManager authenticationManager, JwtProvider jwtProvider, @Lazy UserDetailsService userDetailsService) {
+    public JwtController(AuthenticationManager authenticationManager, JwtProvider jwtProvider, @Lazy InMemoryUserDetailsManager userDetailsService) {
         this.authenticationManager = authenticationManager;
         this.jwtProvider = jwtProvider;
         this.userDetailsService = userDetailsService;

@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +20,7 @@ import java.util.Date;
 
 @Component
 public class JwtProvider {
-    private final UserDetailsService userDetailsService;
+    private final InMemoryUserDetailsManager inMemoryUserDetailsManager;
     @Value("${jwt.secret:your-very-long-secret-key-that-is-at-least-64-bytes-long-0123456789abcdef0123456789abcdef}")
     private String secret;
     @Value("${jwt.expiration:30000}") //1시간:3600000, 30초:30000
@@ -28,8 +29,8 @@ public class JwtProvider {
     private long refreshExpiration;
     private SecretKey secretKey;
 
-    public JwtProvider(@Lazy UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
+    public JwtProvider(@Lazy InMemoryUserDetailsManager inMemoryUserDetailsManager) {
+        this.inMemoryUserDetailsManager = inMemoryUserDetailsManager;
     }
 
     @PostConstruct
@@ -76,7 +77,7 @@ public class JwtProvider {
 
     public UsernamePasswordAuthenticationToken getAuthentication(String token, HttpServletRequest request) {
         String usernameFromToken = getUsernameFromToken(token);
-        UserDetails userDetails = userDetailsService.loadUserByUsername(usernameFromToken);
+        UserDetails userDetails = inMemoryUserDetailsManager.loadUserByUsername(usernameFromToken);
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         return authentication;

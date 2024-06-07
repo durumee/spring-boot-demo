@@ -3,11 +3,12 @@ package com.nrzm.demo.auth.oauth;
 import com.nrzm.demo.auth.jwt.JwtProvider;
 import jakarta.servlet.http.Cookie;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -20,9 +21,13 @@ import java.util.Map;
 @Slf4j
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final JwtProvider jwtProvider;
+    private final InMemoryUserDetailsManager userDetailsService;
+    private final PasswordEncoder passwordEncoder;
 
-    public OAuth2AuthenticationSuccessHandler(JwtProvider jwtProvider) {
+    public OAuth2AuthenticationSuccessHandler(JwtProvider jwtProvider, InMemoryUserDetailsManager userDetailsService, PasswordEncoder passwordEncoder) {
         this.jwtProvider = jwtProvider;
+        this.userDetailsService = userDetailsService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -35,17 +40,28 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String id = String.valueOf(attributes.get("id"));
         String name = (String) attributes.get("name");
         String avatarUrl = (String) attributes.get("avatar_url");
+        String registId = authToken.getAuthorizedClientRegistrationId() + "_" + id;
 
         /**
-         * TODO: 100. User 확인
-         * TODO: 200. User save
+         * 100. User 확인
+         * 200. User save
          * 300. token 생성
          */
+        // User 확인 및 save (by InMemoryUserDetailsManager)
+        if (!userDetailsService.userExists(registId)) {
+            UserDetails user = User.builder()
+                    .username(registId)
+                    .password(passwordEncoder.encode("1234"))
+                    .roles("USER")
+                    .build();
+            userDetailsService.createUser(user);
+        }
+
         // JWT 토큰 생성
-        final String token = jwtProvider.createToken(name);
+        final String token = jwtProvider.createToken(registId);
 
         // JWT 리프레시 토큰 생성
-        final String refreshToken = jwtProvider.createRefreshToken(name);
+        final String refreshToken = jwtProvider.createRefreshToken(registId);
         Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
         refreshTokenCookie.setHttpOnly(true);
         refreshTokenCookie.setPath("/refresh-token");
