@@ -2,11 +2,19 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>메</title>
+    <title>메인화면</title>
 </head>
 <body>
 
 <p>메인화면인가요</p>
+
+<button onclick="openGitHubLogin()">로그인</button>
+
+<script>
+function openGitHubLogin() {
+    location.href = '/oauth2/authorization/github';
+}
+</script>
 
 </body>
 </html>
