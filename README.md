@@ -3,11 +3,11 @@
 ## Client Request
 
 * github.com/login/oauth/authorize?client_id=[발급된_oauth2_client_id]
-  * **스프링시큐리티OAuth2** 에서는 /oauth2/authorization/github 호출하면 처리됨
+  * **스프링시큐리티OAuth2** 에서는 /oauth2/authorization/github 호출하면 처리되도록 구현을 제공
 
 ## Callback
 
-* 위 url 호출 후 사용자가 승인하면 설정된 콜백url 호출됨
+* 위의 로그인 url 호출 후 사용자가 승인하면 깃허브 oauth에 설정된 사이트 콜백 url 호출됨
   * 스프링시큐리티에서 해당 경로를 permitAll 해야함
   * **스프링시큐리티OAuth2** 에서는 **application.yml** 내의 redirect-uri 를 다음처럼 설정하면 기본값으로 호환됨
     * redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
