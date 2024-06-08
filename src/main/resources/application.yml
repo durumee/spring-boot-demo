@@ -35,6 +35,13 @@ spring:
     #src/main/resources/data.sql 방식으로 데이터 초기 적재를 하려면 true 필수
     #Default: false
 
+  #data:
+    #mongodb:
+      #uri: mongodb://localhost:27017/mydatabase
+  autoconfigure:
+    # MongoDB 접속 예외를 위해 CustomMongoConfig 로 접속 구성 처리
+    exclude: org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration
+
 # Swagger
 springdoc:
   default-consumes-media-type: application/json
