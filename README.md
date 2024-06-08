@@ -15,3 +15,11 @@
   - MemberRestController.java 구성 참고
   - SecurityConfig 에 url 필터 처리도 참고
   - index.html 에 swagger ui 링크 있음
+
+> MongoDB docker 활용 설치
+> > 1. docker 설치
+> >    * 윈도우의 경우 wsl2 설치 필요
+> > 2. 윈도우인 경우 docker desktop 실행하고 명령 입력
+> >    * docker run --name my-mongo -d -p 27017:27017 mongo:latest
+> >    * Mongo GUI 클라이언트 링크
+> >      * https://www.mongodb.com/try/download/compass?jmp=docs
