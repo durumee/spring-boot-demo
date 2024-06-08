@@ -10,6 +10,9 @@
     - Swagger UI 구성 예제 적용됨
   - MongoDB (로컬 서버 구성이 된 경우만 로딩)
     - User* 클래스가 예제
+  - --spring.profiles.active=dev
+    - 로컬 구동 옵션 설정 시
+    - DataInitializer.java 에서 테스트 데이터 생성
 - Swagger UI
   - application.yml 내의 구성 및
   - MemberRestController.java 구성 참고
