@@ -24,13 +24,13 @@ public class SecurityConfig {
     public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
         UserDetails user = User.builder()
                 .username("user")
-                .password(passwordEncoder.encode("password"))
+                .password(passwordEncoder.encode("1234"))
                 .roles("USER")
                 .build();
 
         UserDetails admin = User.builder()
                 .username("admin")
-                .password(passwordEncoder.encode("admin"))
+                .password(passwordEncoder.encode("1234"))
                 .roles("ADMIN")
                 .build();
 
