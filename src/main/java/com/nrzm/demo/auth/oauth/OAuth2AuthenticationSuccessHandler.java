@@ -39,8 +39,11 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         // GitHub로부터 받은 사용자 정보
         String id = String.valueOf(attributes.get("id"));
         String name = (String) attributes.get("name");
+        String email = (String) attributes.get("email");
         String avatarUrl = (String) attributes.get("avatar_url");
         String registId = authToken.getAuthorizedClientRegistrationId() + "_" + id;
+
+        log.debug("name, email :: {}, {}", name, email);
 
         /**
          * 100. User 확인
