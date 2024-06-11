@@ -1,0 +1,31 @@
+services:
+  mysql:
+    image: mysql:latest
+    container_name: dev-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root!@34
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: devuser
+      MYSQL_PASSWORD: 1234
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: demo-db:latest
+    container_name: dev-boot
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://dev-mysql:3306/mydatabase
+      SPRING_DATASOURCE_USERNAME: devuser
+      SPRING_DATASOURCE_PASSWORD: 1234
+    depends_on:
+      - mysql
+
+volumes:
+  mysql-data:

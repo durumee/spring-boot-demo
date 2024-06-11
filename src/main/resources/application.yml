@@ -8,10 +8,10 @@ spring:
       # path: /h2-console # h2 db console 경로 변경
 
   datasource:
-    url: jdbc:h2:mem:testdb
-    driver-class-name: org.h2.Driver
-    username: sa
-    password: ;;;
+    url: jdbc:mysql://localhost:3306/mydatabase
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: devuser
+    password: 1234
     initialization-mode: always
     #always: 데이터 소스가 항상 초기화됩니다.
     #embedded: 데이터 소스가 임베디드 데이터베이스인 경우에만 초기화됩니다.
@@ -19,7 +19,7 @@ spring:
     #Default: embedded
 
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: update
       #애플리케이션이 시작될 때 데이터베이스 스키마를 삭제하고 새로 생성합니다. 기존 데이터는 모두 삭제됩니다.
