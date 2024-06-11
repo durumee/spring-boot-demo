@@ -43,6 +43,9 @@ WORKDIR /app
 # 빌드된 JAR 파일을 복사
 COPY --from=build /app/build/libs/*.jar /app/app.jar
 
+# bash 설치는 wait-for-it 스크립트 동작이 필요해서
+RUN apk add --no-cache bash
+
 # wait-for-it 스크립트를 복사하고 실행 권한 부여
 COPY wait-for-it.sh /app/wait-for-it.sh
 RUN chmod +x /app/wait-for-it.sh
@@ -54,4 +57,4 @@ ARG PROFILE
 ENV SPRING_PROFILES_ACTIVE=${PROFILE}
 
 # 애플리케이션 실행 명령어
-ENTRYPOINT ["/app/wait-for-it.sh", "dev-mysql:3306", "--", "/app/wait-for-it.sh", "dev-mongodb:27017", "--", "java", "-jar", "/app/app.jar", "--spring.profiles.active=${SPRING_PROFILES_ACTIVE}"]
+ENTRYPOINT ["/bin/bash", "/app/wait-for-it.sh", "dev-mysql:3306", "--", "/bin/bash", "/app/wait-for-it.sh", "dev-mongodb:27017", "--", "java", "-jar", "/app/app.jar", "--spring.profiles.active=${SPRING_PROFILES_ACTIVE}"]
