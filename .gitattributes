@@ -1,0 +1,2 @@
+# 아래 파일은 도커/리눅스용 sh 파일이므로 CRLF 변환에서 제외
+wait-for-it.sh -text
