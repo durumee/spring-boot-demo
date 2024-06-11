@@ -39,3 +39,4 @@ services:
 
 volumes:
   mysql-data:
+  mongo-data:
