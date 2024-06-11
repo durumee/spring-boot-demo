@@ -43,5 +43,9 @@ WORKDIR /app
 # 빌드된 JAR 파일을 복사
 COPY --from=build /app/build/libs/*.jar /app/app.jar
 
+# wait-for-it 스크립트를 복사하고 실행 권한 부여
+COPY wait-for-it.sh /app/wait-for-it.sh
+RUN chmod +x /app/wait-for-it.sh
+
 # 애플리케이션 실행 명령어
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+ENTRYPOINT ["/app/wait-for-it.sh", "dev-mysql:3306", "--", "java", "-jar", "/app/app.jar"]
