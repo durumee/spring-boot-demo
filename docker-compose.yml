@@ -12,6 +12,14 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
 
+  mongodb:
+    image: mongo:latest
+    container_name: dev-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
   app:
     build:
       context: .
@@ -24,8 +32,10 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://dev-mysql:3306/mydatabase
       SPRING_DATASOURCE_USERNAME: devuser
       SPRING_DATASOURCE_PASSWORD: 1234
+      SPRING_MONGODB_URI: mongodb://dev-mongodb:27017/mydatabase
     depends_on:
       - mysql
+      - mongodb
 
 volumes:
   mysql-data:
