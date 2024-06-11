@@ -47,5 +47,11 @@ COPY --from=build /app/build/libs/*.jar /app/app.jar
 COPY wait-for-it.sh /app/wait-for-it.sh
 RUN chmod +x /app/wait-for-it.sh
 
+# 빌드 인수 받기
+ARG PROFILE
+
+# 환경 변수 설정
+ENV SPRING_PROFILES_ACTIVE=${PROFILE}
+
 # 애플리케이션 실행 명령어
-ENTRYPOINT ["/app/wait-for-it.sh", "dev-mysql:3306", "--", "/app/wait-for-it.sh", "dev-mongodb:27017", "--", "java", "-jar", "/app/app.jar"]
+ENTRYPOINT ["/app/wait-for-it.sh", "dev-mysql:3306", "--", "/app/wait-for-it.sh", "dev-mongodb:27017", "--", "java", "-jar", "/app/app.jar", "--spring.profiles.active=${SPRING_PROFILES_ACTIVE}"]
