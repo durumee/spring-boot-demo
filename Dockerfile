@@ -1,24 +1,11 @@
 # 베이스 이미지 선택
 FROM openjdk:17-jdk-alpine as build
 
-# 패키지 업데이트 및 필요한 패키지 설치
-#RUN apt-get update && apt-get install -y passwd
-
-# appuser 사용자 및 그룹 생성
-#RUN groupadd -r appuser && useradd -r -g appuser appuser
-
-# 작업 디렉토리 생성 및 소유자 변경
-#RUN mkdir /app && chown appuser:appuser /app
-
-# appuser로 변경
-#USER appuser
-
 # 작업 디렉토리 설정
 WORKDIR /app
 
 # Gradle Wrapper와 필요한 파일 복사
 COPY gradlew /app/gradlew
-COPY gradlew.bat /app/gradlew.bat
 COPY gradle /app/gradle
 COPY build.gradle /app/build.gradle
 COPY settings.gradle /app/settings.gradle
@@ -27,12 +14,13 @@ COPY src /app/src
 # 실행 권한 설정
 RUN chmod +x /app/gradlew
 
-# 디버깅 목적으로 파일과 권한 확인
-#RUN sh -c 'ls -l /app && sleep 1d'
-RUN ls -l /app
+# dos2unix 설치 및 줄바꿈 변경
+# 윈도우10+WSL2+DockerDesktop 기준: gradlew not found 등의 메시지가 나와서 내부 빌드 시 개행문자 처리를 하니 해결됨
+RUN apk add --no-cache dos2unix
+RUN dos2unix /app/gradlew
 
 # Gradle 빌드 실행
-RUN /app/gradlew clean bootJar --stacktrace
+RUN /app/gradlew clean bootJar
 
 # 실행 단계
 FROM openjdk:17-jdk-alpine

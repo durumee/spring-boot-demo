@@ -25,7 +25,7 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        PROFILE: ${PROFILE}
+        PROFILE: ${PROFILE:-dev}
     image: demo-db:latest
     container_name: dev-boot
     ports:
