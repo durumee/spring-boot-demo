@@ -1,13 +1,15 @@
 ## (작업중)
 
 - H2 DB 를 도커 기반 MySQL 로 변경 중
+- set PROFILE 을 dev 설정시 테스트용 데이터 생성 (DataInitializer.java)
+  > set PROFILE=dev
 - docker build 테스트
-  - > docker build --progress=plain --no-cache -t demo3:latest .
+  > docker build --progress=plain --no-cache -t demo3:latest .
 - docker compose 테스트
-  - > docker-compose up --build -d
+  > docker-compose up -d
 - mysqld, mongodb 구동 후 부트를 시작하는게 초기 DB 구성에 필요하여  wait-for-it.sh 사용됨
-  - > bash 가 필요해서 bash도 추가됨
-  - > 도커 내 리눅스 구동 시 쉘 파일 개행문자는 LF 여야 문제없이 동작
+  > bash 가 필요해서 bash도 추가됨
+  > 도커 내 리눅스 구동 시 쉘 파일 개행문자는 LF 여야 문제없이 동작
 
 
 ## 이 브랜치의 구성은...
