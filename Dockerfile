@@ -11,6 +11,9 @@ COPY build.gradle /app/build.gradle
 COPY settings.gradle /app/settings.gradle
 COPY src /app/src
 
+# Gradle Wrapper를 실행하여 필요한 파일 다운로드 (다운로드 캐시를 위해 추가)
+RUN ./gradlew --version
+
 # 실행 권한 설정
 RUN chmod +x /app/gradlew
 
