@@ -11,9 +11,6 @@ COPY build.gradle /app/build.gradle
 COPY settings.gradle /app/settings.gradle
 COPY src /app/src
 
-# Gradle Wrapper를 실행하여 필요한 파일 다운로드 (다운로드 캐시를 위해 추가)
-RUN ./gradlew --version
-
 # 실행 권한 설정
 RUN chmod +x /app/gradlew
 
@@ -21,6 +18,9 @@ RUN chmod +x /app/gradlew
 # 윈도우10+WSL2+DockerDesktop 기준: gradlew not found 등의 메시지가 나와서 내부 빌드 시 개행문자 처리를 하니 해결됨
 RUN apk add --no-cache dos2unix
 RUN dos2unix /app/gradlew
+
+# Gradle Wrapper를 실행하여 필요한 파일 다운로드 (다운로드 캐시를 위해 추가)
+RUN /app/gradlew --version
 
 # Gradle 빌드 실행
 RUN /app/gradlew clean bootJar
