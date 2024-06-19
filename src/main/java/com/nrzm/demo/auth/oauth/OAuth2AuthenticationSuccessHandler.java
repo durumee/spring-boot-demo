@@ -86,11 +86,11 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         refreshTokenCookie.setPath("/refresh-token");
         response.addCookie(refreshTokenCookie);
 
-        if (isProfileActive("dev")) {
-            getRedirectStrategy().sendRedirect(request, response, "http://localhost:5173/login?token=" + token);
-        } else {
+        if (isProfileActive("prod")) {
             getRedirectStrategy().sendRedirect(request, response,
                     "https://web-oauth-jwt-demo-lxl86ulic4678e61.sel5.cloudtype.app/login?token=" + token);
+        } else {
+            getRedirectStrategy().sendRedirect(request, response, "http://localhost:5173/login?token=" + token);
         }
     }
 }
