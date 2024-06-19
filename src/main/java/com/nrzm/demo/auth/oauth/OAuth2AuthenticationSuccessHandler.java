@@ -3,6 +3,9 @@ package com.nrzm.demo.auth.oauth;
 import com.nrzm.demo.auth.jwt.JwtProvider;
 import jakarta.servlet.http.Cookie;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,18 +27,31 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private final InMemoryUserDetailsManager userDetailsService;
     private final PasswordEncoder passwordEncoder;
 
-    public OAuth2AuthenticationSuccessHandler(JwtProvider jwtProvider, InMemoryUserDetailsManager userDetailsService, PasswordEncoder passwordEncoder) {
+    @Autowired
+    private Environment env;
+
+    public OAuth2AuthenticationSuccessHandler(JwtProvider jwtProvider, InMemoryUserDetailsManager userDetailsService,
+            PasswordEncoder passwordEncoder) {
         this.jwtProvider = jwtProvider;
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
     }
 
+    private boolean isProfileActive(String profileType) {
+        for (String profile : env.getActiveProfiles()) {
+            if (profileType.equals(profile)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        Authentication authentication) throws IOException {
+            Authentication authentication) throws IOException {
         OAuth2AuthenticationToken authToken = (OAuth2AuthenticationToken) authentication;
         Map<String, Object> attributes = authToken.getPrincipal().getAttributes();
-        
+
         // GitHub로부터 받은 사용자 정보
         String id = String.valueOf(attributes.get("id"));
         String name = (String) attributes.get("name");
@@ -70,6 +86,11 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         refreshTokenCookie.setPath("/refresh-token");
         response.addCookie(refreshTokenCookie);
 
-        getRedirectStrategy().sendRedirect(request, response, "http://localhost:5173/login?token=" + token);
+        if (isProfileActive("dev")) {
+            getRedirectStrategy().sendRedirect(request, response, "http://localhost:5173/login?token=" + token);
+        } else {
+            getRedirectStrategy().sendRedirect(request, response,
+                    "https://web-oauth-jwt-demo-lxl86ulic4678e61.sel5.cloudtype.app/login?token=" + token);
+        }
     }
 }
