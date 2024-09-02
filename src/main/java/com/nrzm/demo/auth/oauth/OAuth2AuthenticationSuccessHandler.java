@@ -88,7 +88,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         if (isProfileActive("prod")) {
             getRedirectStrategy().sendRedirect(request, response,
-                    "https://web-oauth-jwt-demo-lxl86ulic4678e61.sel5.cloudtype.app/login?token=" + token);
+                    "https://port-0-backend-lxl86ulic4678e61.sel5.cloudtype.app/login?token=" + token);
         } else {
             getRedirectStrategy().sendRedirect(request, response, "http://localhost:5173/login?token=" + token);
         }
